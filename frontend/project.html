@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Detail</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px; }
+    h1 { margin-bottom: 6px; color: #333; }
+    .back { display: inline-block; margin-bottom: 20px; color: #4a90e2; text-decoration: none; }
+    .back:hover { text-decoration: underline; }
+    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.1); margin-bottom: 24px; }
+    .card p { margin: 6px 0; color: #555; }
+    .card p span { font-weight: bold; color: #333; }
+    h2 { margin-bottom: 12px; color: #444; font-size: 18px; }
+    table { width: 100%; border-collapse: collapse; }
+    th { background: #4a90e2; color: white; padding: 10px; text-align: left; }
+    td { padding: 10px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f9f9f9; }
+    .badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .Completed { background: #d1e7dd; color: #0a3622; }
+    .Approved { background: #d1e7dd; color: #0a3622; }
+    .Pending { background: #fff3cd; color: #856404; }
+    .Delayed { background: #f8d7da; color: #842029; }
+    .Rejected { background: #f8d7da; color: #842029; }
+    .Not\.Started { background: #e2e3e5; color: #41464b; }
+    .In\.Progress { background: #cfe2ff; color: #084298; }
+  </style>
+</head>
+<body>
+  <a class="back" href="index.html">← Back to Dashboard</a>
+  <h1 id="project-name">Loading...</h1>
+
+  <div class="card" id="project-info"></div>
+
+  <div class="card">
+    <h2>Project Steps</h2>
+    <table>
+      <thead><tr><th>Step</th><th>Status</th><th>Due Date</th></tr></thead>
+      <tbody id="steps-table"></tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2>Document Approvals</h2>
+    <table>
+      <thead><tr><th>Document</th><th>Status</th><th>Approved By</th></tr></thead>
+      <tbody id="approvals-table"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    fetch(`http://localhost:3000/projects/${id}`)
+      .then(r => r.json())
+      .then(p => {
+        document.getElementById('project-name').textContent = p.project_name;
+        document.getElementById('project-info').innerHTML = `
+          <p><span>Manager:</span> ${p.project_manager}</p>
+          <p><span>Start Date:</span> ${p.start_date.split('T')[0]}</p>
+          <p><span>End Date:</span> ${p.end_date.split('T')[0]}</p>
+          <p><span>Status:</span> ${p.overall_status}</p>
+        `;
+      });
+
+    fetch(`http://localhost:3000/projects/${id}/steps`)
+      .then(r => r.json())
+      .then(steps => {
+        const tbody = document.getElementById('steps-table');
+        steps.forEach(s => {
+          const cls = s.step_status.replace(' ', '\\.');
+          tbody.innerHTML += `
+            <tr>
+              <td>${s.step_name}</td>
+              <td><span class="badge ${cls}">${s.step_status}</span></td>
+              <td>${s.step_due_date.split('T')[0]}</td>
+            </tr>`;
+        });
+      });
+
+    fetch(`http://localhost:3000/projects/${id}/document-approvals`)
+      .then(r => r.json())
+      .then(docs => {
+        const tbody = document.getElementById('approvals-table');
+        docs.forEach(d => {
+          tbody.innerHTML += `
+            <tr>
+              <td>${d.document_name}</td>
+              <td><span class="badge ${d.approval_status}">${d.approval_status}</span></td>
+              <td>${d.approved_by || '-'}</td>
+            </tr>`;
+        });
+      });
+  </script>
+</body>
+</html>

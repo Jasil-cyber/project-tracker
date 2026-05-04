@@ -1,0 +1,14 @@
+project_id,project_name,project_manager,start_date,end_date,overall_status,step_name,step_status,step_due_date,document_name,approval_status,approved_by
+1,Office Renovation,Ahmed Al Mansoori,2024-01-10,2024-06-30,In Progress,Planning,Completed,2024-01-20,Site Survey Report,Approved,John Smith
+1,Office Renovation,Ahmed Al Mansoori,2024-01-10,2024-06-30,In Progress,Design,In Progress,2024-02-15,Architectural Design,Pending,
+1,Office Renovation,Ahmed Al Mansoori,2024-01-10,2024-06-30,In Progress,Construction,Not Started,2024-04-01,Construction Permit,Rejected,Jane Doe
+2,ERP Implementation,Sara Al Hashimi,2024-02-01,2024-12-31,Delayed,Requirements,Completed,2024-02-28,Requirements Document,Approved,Mike Johnson
+2,ERP Implementation,Sara Al Hashimi,2024-02-01,2024-12-31,Delayed,Development,Delayed,2024-05-01,Technical Spec,Pending,
+2,ERP Implementation,Sara Al Hashimi,2024-02-01,2024-12-31,Delayed,Testing,Not Started,2024-08-01,Test Plan,Pending,
+3,Website Redesign,Omar Khalid,2024-03-15,2024-07-15,Completed,Planning,Completed,2024-03-20,Project Charter,Approved,Sara Lee
+3,Website Redesign,Omar Khalid,2024-03-15,2024-07-15,Completed,Design,Completed,2024-04-10,UI Mockups,Approved,Tom Brown
+3,Website Redesign,Omar Khalid,2024-03-15,2024-07-15,Completed,Launch,Completed,2024-07-15,Launch Report,Approved,Sara Lee
+4,HR System Upgrade,Fatima Noor,2024-05-01,2024-11-30,In Progress,Analysis,Completed,2024-05-20,Gap Analysis Report,Approved,John Smith
+4,HR System Upgrade,Fatima Noor,2024-05-01,2024-11-30,In Progress,Development,In Progress,2024-08-30,Development Plan,Pending,
+5,Network Infrastructure,Khalid Rashid,2024-06-01,2024-10-31,Delayed,Site Survey,Delayed,2024-06-30,Survey Report,Rejected,Mike Johnson
+5,Network Infrastructure,Khalid Rashid,2024-06-01,2024-10-31,Delayed,Installation,Not Started,2024-09-01,Installation Plan,Pending,

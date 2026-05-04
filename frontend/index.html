@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Project Tracker Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4f6f8; padding: 20px; }
+    h1 { margin-bottom: 20px; color: #333; }
+    .kpi-container { display: flex; gap: 16px; margin-bottom: 30px; }
+    .kpi { background: white; padding: 20px; border-radius: 8px; flex: 1; text-align: center; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    .kpi h2 { font-size: 36px; color: #4a90e2; }
+    .kpi p { color: #666; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+    th { background: #4a90e2; color: white; padding: 12px; text-align: left; }
+    td { padding: 12px; border-bottom: 1px solid #eee; }
+    tr:hover { background: #f9f9f9; }
+    a { color: #4a90e2; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .badge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .In.Progress { background: #fff3cd; color: #856404; }
+    .Completed { background: #d1e7dd; color: #0a3622; }
+    .Delayed { background: #f8d7da; color: #842029; }
+  </style>
+</head>
+<body>
+  <h1>Project Tracker Dashboard</h1>
+
+  <div class="kpi-container">
+    <div class="kpi"><h2 id="total">-</h2><p>Total Projects</p></div>
+    <div class="kpi"><h2 id="delayed">-</h2><p>Delayed Projects</p></div>
+    <div class="kpi"><h2 id="pending">-</h2><p>Pending Approvals</p></div>
+    <div class="kpi"><h2 id="rejected">-</h2><p>Rejected Approvals</p></div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Project Name</th>
+        <th>Manager</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <th>Status</th>
+        <th>Detail</th>
+      </tr>
+    </thead>
+    <tbody id="project-table"></tbody>
+  </table>
+
+  <script>
+    fetch('http://localhost:3000/dashboard/summary')
+      .then(r => r.json())
+      .then(data => {
+        document.getElementById('total').textContent = data.total_projects;
+        document.getElementById('delayed').textContent = data.delayed_projects;
+        document.getElementById('pending').textContent = data.pending_approvals;
+        document.getElementById('rejected').textContent = data.rejected_approvals;
+      });
+
+    fetch('http://localhost:3000/projects')
+      .then(r => r.json())
+      .then(projects => {
+        const tbody = document.getElementById('project-table');
+        projects.forEach(p => {
+          const status = p.overall_status.replace(' ', '.');
+          tbody.innerHTML += `
+            <tr>
+              <td>${p.id}</td>
+              <td>${p.project_name}</td>
+              <td>${p.project_manager}</td>
+              <td>${p.start_date.split('T')[0]}</td>
+              <td>${p.end_date.split('T')[0]}</td>
+              <td><span class="badge ${status}">${p.overall_status}</span></td>
+              <td><a href="project.html?id=${p.id}">View</a></td>
+            </tr>`;
+        });
+      });
+  </script>
+</body>
+</html>
